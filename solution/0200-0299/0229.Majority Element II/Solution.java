@@ -1,39 +1,38 @@
 class Solution {
     public List<Integer> majorityElement(int[] nums) {
-        int n1 = 0, n2 = 0;
-        int m1 = 0, m2 = 1;
-        for (int m : nums) {
-            if (m == m1) {
-                ++n1;
-            } else if (m == m2) {
-                ++n2;
-            } else if (n1 == 0) {
-                m1 = m;
-                ++n1;
-            } else if (n2 == 0) {
-                m2 = m;
-                ++n2;
+       int n = nums.length;
+        Integer candidate1 = null, candidate2 = null;
+        int count1 = 0, count2 = 0;
+
+        
+        for (int num : nums) {
+            if (candidate1 != null && num == candidate1) {
+                count1++;
+            } else if (candidate2 != null && num == candidate2) {
+                count2++;
+            } else if (count1 == 0) {
+                candidate1 = num;
+                count1 = 1;
+            } else if (count2 == 0) {
+                candidate2 = num;
+                count2 = 1;
             } else {
-                --n1;
-                --n2;
+                count1--;
+                count2--;
             }
         }
-        List<Integer> ans = new ArrayList<>();
-        n1 = 0;
-        n2 = 0;
-        for (int m : nums) {
-            if (m == m1) {
-                ++n1;
-            } else if (m == m2) {
-                ++n2;
-            }
+
+        count1 = 0;
+        count2 = 0;
+        for (int num : nums) {
+            if (num == candidate1) count1++;
+            else if (num == candidate2) count2++;
         }
-        if (n1 > nums.length / 3) {
-            ans.add(m1);
-        }
-        if (n2 > nums.length / 3) {
-            ans.add(m2);
-        }
-        return ans;
+
+        List<Integer> result = new ArrayList<>();
+        if (count1 > n / 3) result.add(candidate1);
+        if (count2 > n / 3 && candidate1 != candidate2) result.add(candidate2);
+
+        return result;
     }
 }
